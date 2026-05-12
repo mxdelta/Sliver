@@ -121,4 +121,5 @@ Sliver
     ls //srv02.child.htb.local/c$
 
     
-
+# Dumping credentials on SRV02
+    
