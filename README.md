@@ -6,7 +6,7 @@ Sliver
     new-operator -n student -l 10.10.14.193
     multiplayer
 
-    get -q https://github.com/BishopFox/sliver/releases/download/v1.5.42/sliver-client_linux
+    wget -q https://github.com/BishopFox/sliver/releases/download/v1.5.42/sliver-client_linux
     mxdelta@htb[/htb]$ chmod +x ./sliver-client_linux
     mxdelta@htb[/htb]$ ./sliver-client_linux import student_10.10.14.193.cfg 
 
