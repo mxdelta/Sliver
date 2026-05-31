@@ -3,7 +3,7 @@ Sliver
 # Устновка v1.5.42
     wget -q https://github.com/BishopFox/sliver/releases/download/v1.5.42/sliver-server_linux
     chmod +x ./sliver-server_linux
-    new-operator -n student -l 10.10.14.193 [--permissions ADMIN]
+    new-operator -n student -l 10.10.14.193 [--permissions all]
     multiplayer
 
     wget -q https://github.com/BishopFox/sliver/releases/download/v1.5.42/sliver-client_linux
